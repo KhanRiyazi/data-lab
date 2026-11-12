@@ -1,4 +1,576 @@
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Google+Sans+Text:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #f6f8fc;
+            --surface: #fff;
+            --text: #202124;
+            --muted: #5f6368;
+            --line: #dadce0;
+            --blue: #1a73e8;
+            --blue-soft: #e8f0fe;
+            --blue-dark: #1967d2;
+            --red: #ea4335;
+            --yellow: #fbbc04;
+            --green: #34a853;
+            --search: #eaf1fb;
+            --hover: #e9eef6;
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root {
+                --bg: #131314;
+                --surface: #1e1f20;
+                --text: #e3e3e3;
+                --muted: #9aa0a6;
+                --line: #3c4043;
+                --blue: #8ab4f8;
+                --blue-soft: #2d3f5e;
+                --blue-dark: #a8c7fa;
+                --search: #2a2b2e;
+                --hover: #2a2b2e
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        body {
+            font-family: "Google Sans Text", Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column
+        }
+
+        header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px;
+            flex-shrink: 0
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 50%;
+            background: none;
+            color: var(--muted);
+            cursor: pointer;
+            display: grid;
+            place-items: center
+        }
+
+        .icon-btn:hover {
+            background: var(--hover)
+        }
+
+        .icon-btn:focus-visible,
+        .nav a:focus-visible,
+        .btn:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 2px
+        }
+
+        svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 228px;
+            font-size: 22px;
+            color: var(--muted)
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: conic-gradient(var(--red) 0 25%, var(--yellow) 0 50%, var(--green) 0 75%, #4285f4 0);
+            display: grid;
+            place-items: center
+        }
+
+        .logo i {
+            width: 14px;
+            height: 14px;
+            background: var(--bg);
+            border-radius: 50%
+        }
+
+        .search {
+            flex: 1;
+            max-width: 720px;
+            height: 48px;
+            border-radius: 24px;
+            background: var(--search);
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 8px;
+            color: var(--muted)
+        }
+
+        .search input {
+            flex: 1;
+            border: 0;
+            background: none;
+            font: inherit;
+            font-size: 16px;
+            color: var(--text);
+            outline: 0
+        }
+
+        .spacer {
+            flex: 1
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 500;
+            font-size: 14px
+        }
+
+        .layout {
+            flex: 1;
+            display: flex;
+            min-height: 0
+        }
+
+        .nav {
+            width: 256px;
+            padding: 8px 12px;
+            flex-shrink: 0
+        }
+
+        .nav .new {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 56px;
+            padding: 0 20px;
+            margin-bottom: 12px;
+            border: 0;
+            border-radius: 16px;
+            background: var(--surface);
+            color: var(--text);
+            font: 500 14px inherit;
+            font-family: inherit;
+            box-shadow: 0 1px 3px rgba(60, 64, 67, .3), 0 4px 8px 3px rgba(60, 64, 67, .15);
+            cursor: pointer
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 0 20px 20px 0;
+            margin-left: -12px;
+            padding-left: 28px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px
+        }
+
+        .nav a:hover {
+            background: var(--hover)
+        }
+
+        .nav a.on {
+            background: var(--blue-soft);
+            color: var(--blue-dark);
+            font-weight: 500
+        }
+
+        .nav svg {
+            width: 20px;
+            height: 20px
+        }
+
+        .nav hr {
+            border: 0;
+            border-top: 1px solid var(--line);
+            margin: 12px 0
+        }
+
+        main {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 16px 16px 0 0;
+            margin-right: 16px;
+            padding: 24px 32px;
+            overflow: auto
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 400
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 4px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 2px 10px;
+            font-size: 12px
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted)
+        }
+
+        .chip.ok .dot {
+            background: var(--green)
+        }
+
+        .chip.bad .dot {
+            background: var(--red)
+        }
+
+        .btn {
+            border: 1px solid var(--line);
+            background: none;
+            color: var(--blue);
+            border-radius: 20px;
+            height: 36px;
+            padding: 0 20px;
+            font: 500 14px inherit;
+            font-family: inherit;
+            cursor: pointer
+        }
+
+        .btn:hover {
+            background: var(--blue-soft)
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 16px 20px
+        }
+
+        .stat .k {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .stat .k b {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%
+        }
+
+        .stat .v {
+            font-size: 28px;
+            margin-top: 8px;
+            font-family: "Google Sans Text", Roboto, sans-serif
+        }
+
+        .card h2 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px
+        }
+
+        .chartbox {
+            position: relative;
+            height: 300px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px
+        }
+
+        th {
+            text-align: left;
+            color: var(--muted);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        tr:hover td {
+            background: var(--hover)
+        }
+
+        .scroll {
+            max-height: 260px;
+            overflow: auto
+        }
+
+        .empty {
+            color: var(--muted);
+            padding: 24px;
+            text-align: center;
+            font-size: 14px
+        }
+
+        @media (max-width:860px) {
+
+            .nav,
+            .brand span {
+                display: none
+            }
+
+            .brand {
+                width: auto
+            }
+
+            main {
+                margin: 0;
+                border-radius: 0;
+                padding: 16px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <button class="icon-btn" aria-label="Main menu"><svg viewBox="0 0 24 24">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </svg></button>
+        <div class="brand">
+            <div class="logo"><i></i></div><span>Data Lab</span>
+        </div>
+        <div class="search">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z" />
+            </svg>
+            <input id="q" placeholder="Search readings" aria-label="Search readings">
+        </div>
+        <div class="spacer"></div>
+        <button class="icon-btn" id="refresh" aria-label="Refresh data"><svg viewBox="0 0 24 24">
+                <path
+                    d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+            </svg></button>
+        <div class="avatar">R</div>
+    </header>
+
+    <div class="layout">
+        <nav class="nav">
+            <button class="new"><svg viewBox="0 0 24 24">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                </svg>New source</button>
+            <a href="#" class="on"><svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>Home</a>
+            <a href="#"><svg viewBox="0 0 24 24">
+                    <path d="M3 13h2v8H3zm4-5h2v13H7zm4-5h2v18h-2zm4 8h2v10h-2zm4-3h2v13h-2z" />
+                </svg>Weather</a>
+            <a href="#"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4z" />
+                </svg>Jobs</a>
+            <a href="#"><svg viewBox="0 0 24 24">
+                    <path d="M3.5 18.5l6-6 4 4L22 6.9 20.6 5.5l-7.1 7.1-4-4L2 16z" />
+                </svg>Prices</a>
+            <hr>
+            <a href="/docs"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                </svg>API docs</a>
+            <a href="https://khanriyazi.in/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-3a15.7 15.7 0 0 0-1.4-3.6A8 8 0 0 1 18.9 8zM12 4c.8 1.2 1.5 2.5 1.9 4h-3.8c.4-1.5 1.1-2.8 1.9-4zM4.3 14a8 8 0 0 1 0-4h3.4a16 16 0 0 0 0 4H4.3zm.8 2h3a15.700 15.700 0 0 0 1.400 3.600A8 8 0 0 1 5.100 16zm3-8h-3a8 8 0 0 1 4.400-3.600A15.700 15.700 0 0 0 8.100 8zM12 20c-.8-1.200-1.500-2.500-1.900-4h3.800c-.4 1.500-1.100 2.800-1.900 4zm2.300-6H9.700a14.700 14.700 0 0 1 0-4h4.600a14.700 14.700 0 0 1 0 4zm.3 5.600c.6-1.100 1.100-2.300 1.400-3.600h3a8 8 0 0 1-4.400 3.600zm1.700-5.600a16 16 0 0 0 0-4h3.400a8 8 0 0 1 0 4h-3.400z" />
+                </svg>My website</a>
+        </nav>
+
+        <main>
+            <h1>Good day, Riyaz</h1>
+            <div class="sub">
+                <span id="status" class="chip"><i class="dot"></i><span>Checking API</span></span>
+                <span id="updated">Loading data</span>
+                <button class="btn" id="refresh2">Refresh</button>
+            </div>
+
+            <section class="stats" aria-label="Summary">
+                <div class="card stat">
+                    <div class="k"><b style="background:var(--blue)"></b>Latest</div>
+                    <div class="v" id="s-last">-</div>
+                </div>
+                <div class="card stat">
+                    <div class="k"><b style="background:var(--red)"></b>Highest</div>
+                    <div class="v" id="s-max">-</div>
+                </div>
+                <div class="card stat">
+                    <div class="k"><b style="background:var(--green)"></b>Lowest</div>
+                    <div class="v" id="s-min">-</div>
+                </div>
+                <div class="card stat">
+                    <div class="k"><b style="background:var(--yellow)"></b>Average</div>
+                    <div class="v" id="s-avg">-</div>
+                </div>
+            </section>
+
+            <section class="card" style="margin-bottom:16px">
+                <h2>Lucknow hourly temperature (&deg;C)</h2>
+                <div class="chartbox"><canvas id="chart"></canvas></div>
+            </section>
+
+            <section class="card">
+                <h2>Readings</h2>
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hour</th>
+                                <th>Temperature</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rows"></tbody>
+                    </table>
+                    <div class="empty" id="empty" hidden>No readings yet. Run the collector, then refresh.</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        let chart, all = { labels: [], values: [] };
+        const $ = id => document.getElementById(id);
+        const fmt = n => n.toFixed(1) + "\u00b0";
+
+        function render(filter = "") {
+            const f = filter.trim().toLowerCase();
+            const tbody = $("rows");
+            tbody.innerHTML = "";
+            let shown = 0;
+            all.values.forEach((v, i) => {
+                const hour = all.labels[i];
+                if (f && !hour.toLowerCase().includes(f) && !String(v).includes(f)) return;
+                const d = i ? v - all.values[i - 1] : 0;
+                const tr = document.createElement("tr");
+                const color = d > 0 ? "var(--red)" : d < 0 ? "var(--green)" : "var(--muted)";
+                tr.innerHTML = "<td>" + hour + "</td><td>" + fmt(v) + "</td><td style='color:" + color + "'>" +
+                    (i ? (d > 0 ? "+" : "") + d.toFixed(1) : "-") + "</td>";
+                tbody.appendChild(tr);
+                shown++;
+            });
+            $("empty").hidden = shown > 0;
+        }
+
+        function stats() {
+            const v = all.values;
+            if (!v.length) return;
+            $("s-last").textContent = fmt(v[v.length - 1]);
+            $("s-max").textContent = fmt(Math.max(...v));
+            $("s-min").textContent = fmt(Math.min(...v));
+            $("s-avg").textContent = fmt(v.reduce((a, b) => a + b, 0) / v.length);
+        }
+
+        function draw() {
+            const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+            const blue = dark ? "#8ab4f8" : "#1a73e8";
+            const grid = dark ? "#3c4043" : "#e8eaed";
+            const txt = dark ? "#9aa0a6" : "#5f6368";
+            if (chart) chart.destroy();
+            chart = new Chart($("chart"), {
+                type: "line",
+                data: {
+                    labels: all.labels, datasets: [{
+                        data: all.values, borderColor: blue, backgroundColor: blue + "22",
+                        fill: true, tension: .35, pointRadius: 3, pointBackgroundColor: blue, borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false }, ticks: { color: txt } }, y: { grid: { color: grid }, ticks: { color: txt } } }
+                }
+            });
+        }
+
+        async function load() {
+            try {
+                const h = await fetch("/api/health");
+                const ok = h.ok;
+                $("status").className = "chip " + (ok ? "ok" : "bad");
+                $("status").lastChild.textContent = ok ? "API online" : "API error";
+                const r = await fetch("/api/data");
+                all = await r.json();
+                stats(); draw(); render($("q").value);
+                $("updated").textContent = all.values.length
+                    ? "Updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                    : (all.message || "No data");
+            } catch (e) {
+                $("status").className = "chip bad";
+                $("status").lastChild.textContent = "API offline";
+                $("updated").textContent = "Could not reach the server";
+            }
+        }
+
+        $("q").addEventListener("input", e => render(e.target.value));
+        $("refresh").onclick = $("refresh2").onclick = load;
+        load();
+    </script>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -19,4 +591,4 @@
     </script>
 </body>
 
-</html>
+</html> -->
