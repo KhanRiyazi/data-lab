@@ -383,6 +383,88 @@
                 padding: 16px
             }
         }
+
+        [hidden] {
+            display: none !important
+        }
+
+        h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted);
+            margin: 22px 0 10px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 12px
+        }
+
+        .res {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 16px
+        }
+
+        .res input {
+            margin-top: 3px;
+            accent-color: var(--blue);
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0
+        }
+
+        .res a {
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px
+        }
+
+        .res a:hover,
+        td a:hover {
+            text-decoration: underline
+        }
+
+        .res p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 2px
+        }
+
+        td a {
+            color: var(--blue);
+            text-decoration: none
+        }
+
+        .path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .path span {
+            background: var(--blue-soft);
+            color: var(--blue-dark);
+            border-radius: 16px;
+            padding: 4px 12px;
+            font-size: 13px
+        }
+
+        .note {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 12px
+        }
+
+        .note a,
+        .sub a {
+            color: var(--blue)
+        }
     </style>
 </head>
 
@@ -419,7 +501,7 @@
                 </svg>Home</a>
             <a href="#"><svg viewBox="0 0 24 24">
                     <path d="M3 13h2v8H3zm4-5h2v13H7zm4-5h2v18h-2zm4 8h2v10h-2zm4-3h2v13h-2z" />
-                </svg>Weather</a>
+                </svg>Learn</a>
             <a href="#"><svg viewBox="0 0 24 24">
                     <path
                         d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4z" />
@@ -439,52 +521,132 @@
         </nav>
 
         <main>
-            <h1>Good day, Riyaz</h1>
-            <div class="sub">
-                <span id="status" class="chip"><i class="dot"></i><span>Checking API</span></span>
-                <span id="updated">Loading data</span>
-                <button class="btn" id="refresh2">Refresh</button>
-            </div>
+            <section id="v-home" class="view">
+                <h1>Good day, Riyaz</h1>
+                <div class="sub">
+                    <span id="status" class="chip"><i class="dot"></i><span>Checking API</span></span>
+                    <span id="updated">Loading data</span>
+                    <button class="btn" id="refresh2">Refresh</button>
+                </div>
 
-            <section class="stats" aria-label="Summary">
-                <div class="card stat">
-                    <div class="k"><b style="background:var(--blue)"></b>Latest</div>
-                    <div class="v" id="s-last">-</div>
-                </div>
-                <div class="card stat">
-                    <div class="k"><b style="background:var(--red)"></b>Highest</div>
-                    <div class="v" id="s-max">-</div>
-                </div>
-                <div class="card stat">
-                    <div class="k"><b style="background:var(--green)"></b>Lowest</div>
-                    <div class="v" id="s-min">-</div>
-                </div>
-                <div class="card stat">
-                    <div class="k"><b style="background:var(--yellow)"></b>Average</div>
-                    <div class="v" id="s-avg">-</div>
-                </div>
+                <section class="stats" aria-label="Summary">
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--blue)"></b>Latest</div>
+                        <div class="v" id="s-last">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--red)"></b>Highest</div>
+                        <div class="v" id="s-max">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--green)"></b>Lowest</div>
+                        <div class="v" id="s-min">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--yellow)"></b>Average</div>
+                        <div class="v" id="s-avg">-</div>
+                    </div>
+                </section>
+
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Lucknow hourly temperature (&deg;C)</h2>
+                    <div class="chartbox"><canvas id="chart"></canvas></div>
+                </section>
+
+                <section class="card">
+                    <h2>Readings</h2>
+                    <div class="scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>Temperature</th>
+                                    <th>Change</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rows"></tbody>
+                        </table>
+                        <div class="empty" id="empty" hidden>No readings yet. Run the collector, then refresh.</div>
+                    </div>
+                </section>
             </section>
 
-            <section class="card" style="margin-bottom:16px">
-                <h2>Lucknow hourly temperature (&deg;C)</h2>
-                <div class="chartbox"><canvas id="chart"></canvas></div>
+            <section id="v-jobs" class="view" hidden>
+                <h1>Data jobs market</h1>
+                <div class="sub">
+                    <span id="jobs-status" class="chip"><i class="dot"></i><span>Loading</span></span>
+                    <span>Remote data roles from <a href="https://remotive.com" target="_blank"
+                            rel="noopener">Remotive</a>, refreshed every 6 hours</span>
+                </div>
+                <section class="stats">
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--blue)"></b>Open roles</div>
+                        <div class="v" id="j-total">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--green)"></b>Salary listed</div>
+                        <div class="v" id="j-sal">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--yellow)"></b>Top skill</div>
+                        <div class="v" id="j-top" style="font-size:22px">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--red)"></b>Showing</div>
+                        <div class="v" id="j-shown">-</div>
+                    </div>
+                </section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Most requested skills</h2>
+                    <div class="chartbox" style="height:280px"><canvas id="jobs-chart"></canvas></div>
+                </section>
+                <section class="card">
+                    <h2>Open roles</h2>
+                    <div class="scroll" style="max-height:480px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>Company</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th>Posted</th>
+                                    <th>Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobs-rows"></tbody>
+                        </table>
+                    </div>
+                    <p class="note">Job data courtesy of <a href="https://remotive.com" target="_blank"
+                            rel="noopener">Remotive</a>. Open each role on their site to apply.</p>
+                </section>
             </section>
 
-            <section class="card">
-                <h2>Readings</h2>
-                <div class="scroll">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Hour</th>
-                                <th>Temperature</th>
-                                <th>Change</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rows"></tbody>
-                    </table>
-                    <div class="empty" id="empty" hidden>No readings yet. Run the collector, then refresh.</div>
+            <section id="v-prices" class="view" hidden>
+                <h1>Market prices</h1>
+                <div class="sub">
+                    <span id="fx-status" class="chip"><i class="dot"></i><span>Loading</span></span>
+                    <span id="fx-date">Exchange rates in Indian rupees</span>
                 </div>
+                <section class="stats" id="fx-cards"></section>
+                <section class="card">
+                    <h2>US dollar in rupees, last 30 days</h2>
+                    <div class="chartbox"><canvas id="fx-chart"></canvas></div>
+                    <p class="note">Reference rates from the European Central Bank, served by Frankfurter. Updated on
+                        business days.</p>
+                </section>
+            </section>
+
+            <section id="v-learn" class="view" hidden>
+                <h1>Learning hub</h1>
+                <div class="sub"><span class="chip ok"><i class="dot"></i><span id="learn-progress">0
+                            explored</span></span><span>Tick each resource when you finish it. Progress is saved in this
+                        browser.</span></div>
+                <h3>Suggested order for a data analyst</h3>
+                <div class="path"><span>1 SQL</span><span>2 Spreadsheets</span><span>3 Python and pandas</span><span>4
+                        Statistics</span><span>5 Visualization</span><span>6 Storytelling</span><span>7 Machine
+                        learning</span><span>8 Deployment</span></div>
+                <div id="learn-body"></div>
             </section>
         </main>
     </div>
@@ -562,33 +724,148 @@
             }
         }
 
-        $("q").addEventListener("input", e => render(e.target.value));
+        $("q").addEventListener("input", e => filterView(e.target.value));
         $("refresh").onclick = $("refresh2").onclick = load;
+
+        const order = ["home", "learn", "jobs", "prices"];
+        const navLinks = [...document.querySelectorAll(".nav a")].slice(0, 4);
+        const loaded = { home: true };
+        let cur = "home", jobsChart, fxChart;
+        const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        const safeUrl = u => /^https?:\/\//i.test(u || "") ? u : "#";
+        const theme = () => {
+            const d = matchMedia("(prefers-color-scheme: dark)").matches;
+            return { blue: d ? "#8ab4f8" : "#1a73e8", grid: d ? "#3c4043" : "#e8eaed", txt: d ? "#9aa0a6" : "#5f6368" };
+        };
+        function setStatus(id, cls, text) { const el = $(id); el.className = "chip " + cls; el.lastChild.textContent = text; }
+        async function getJSON(url) {
+            const r = await fetch(url);
+            const d = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(d.detail || ("HTTP " + r.status));
+            return d;
+        }
+
+        async function loadJobs() {
+            setStatus("jobs-status", "", "Loading");
+            try {
+                const d = await getJSON("/api/jobs");
+                $("j-total").textContent = d.total;
+                $("j-sal").textContent = d.with_salary;
+                $("j-top").textContent = d.top_skills.length ? d.top_skills[0].skill : "-";
+                $("j-shown").textContent = d.shown;
+                $("jobs-rows").innerHTML = d.jobs.map(j => "<tr data-row><td><a href='" + esc(safeUrl(j.url)) + "' target='_blank' rel='noopener'>" + esc(j.title) + "</a></td><td>" + esc(j.company) + "</td><td>" + esc((j.job_type || "").replace("_", " ")) + "</td><td>" + esc(j.location) + "</td><td>" + esc(j.posted) + "</td><td>" + esc(j.salary || "-") + "</td></tr>").join("");
+                const t = theme();
+                if (jobsChart) jobsChart.destroy();
+                jobsChart = new Chart($("jobs-chart"), {
+                    type: "bar",
+                    data: { labels: d.top_skills.map(x => x.skill), datasets: [{ data: d.top_skills.map(x => x.count), backgroundColor: t.blue, borderRadius: 4 }] },
+                    options: {
+                        indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                        scales: { x: { grid: { color: t.grid }, ticks: { color: t.txt } }, y: { grid: { display: false }, ticks: { color: t.txt } } }
+                    }
+                });
+                setStatus("jobs-status", "ok", "Live");
+            } catch (e) {
+                loaded.jobs = false;
+                setStatus("jobs-status", "bad", "Failed");
+                $("jobs-rows").innerHTML = "<tr><td colspan='6' class='empty'>" + esc(e.message) + "</td></tr>";
+            }
+        }
+
+        async function loadPrices() {
+            setStatus("fx-status", "", "Loading");
+            try {
+                const d = await getJSON("/api/prices");
+                const colors = ["var(--blue)", "var(--red)", "var(--green)", "var(--yellow)"];
+                $("fx-cards").innerHTML = Object.entries(d.inr_per).map(([k, v], i) => "<div class='card stat'><div class='k'><b style='background:" + colors[i % 4] + "'></b>" + esc(k) + "</div><div class='v'>\u20b9" + v.toFixed(2) + "</div></div>").join("");
+                $("fx-date").textContent = "Rates for " + d.date + ". USD " + (d.change_pct >= 0 ? "+" : "") + d.change_pct.toFixed(2) + "% in 30 days";
+                const t = theme();
+                if (fxChart) fxChart.destroy();
+                fxChart = new Chart($("fx-chart"), {
+                    type: "line",
+                    data: { labels: d.history.labels, datasets: [{ data: d.history.values, borderColor: t.blue, backgroundColor: t.blue + "22", fill: true, tension: .3, pointRadius: 2, borderWidth: 2 }] },
+                    options: {
+                        responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                        scales: { x: { grid: { display: false }, ticks: { color: t.txt, maxTicksLimit: 8 } }, y: { grid: { color: t.grid }, ticks: { color: t.txt } } }
+                    }
+                });
+                setStatus("fx-status", "ok", "Live");
+            } catch (e) {
+                loaded.prices = false;
+                setStatus("fx-status", "bad", "Failed");
+                $("fx-date").textContent = e.message;
+            }
+        }
+
+        const LEARN = [
+            ["GitHub repositories", [
+                ["microsoft/Data-Science-For-Beginners", "https://github.com/microsoft/Data-Science-For-Beginners", "10 weeks, 20 lessons with quizzes and projects. Best first repo."],
+                ["jvns/pandas-cookbook", "https://github.com/jvns/pandas-cookbook", "Hands-on pandas notebooks for real data cleaning and analysis."],
+                ["rougier/numpy-100", "https://github.com/rougier/numpy-100", "100 NumPy exercises with solutions. Good for the maths side."],
+                ["donnemartin/data-science-ipython-notebooks", "https://github.com/donnemartin/data-science-ipython-notebooks", "Notebooks covering scikit-learn, matplotlib, pandas, Spark and more."],
+                ["DataTalksClub/machine-learning-zoomcamp", "https://github.com/DataTalksClub/machine-learning-zoomcamp", "Project-based machine learning course, free."],
+                ["DataTalksClub/data-engineering-zoomcamp", "https://github.com/DataTalksClub/data-engineering-zoomcamp", "Pipelines, warehouses and orchestration, free."],
+                ["DataTalksClub/mlops-zoomcamp", "https://github.com/DataTalksClub/mlops-zoomcamp", "What happens after a model is trained: tracking and deployment."],
+                ["microsoft/ai-for-beginners", "https://github.com/microsoft/ai-for-beginners", "12-week AI curriculum with TensorFlow and PyTorch labs."],
+                ["scikit-learn/scikit-learn", "https://github.com/scikit-learn/scikit-learn", "Read the source and examples of the core machine learning library."]
+            ]],
+            ["Videos and channels", [
+                ["StatQuest with Josh Starmer", "https://www.youtube.com/@statquest", "Statistics and machine learning explained in small clear steps."],
+                ["3Blue1Brown", "https://www.youtube.com/@3blue1brown", "Visual maths: linear algebra, calculus and neural networks."],
+                ["freeCodeCamp.org", "https://www.youtube.com/@freecodecamp", "Long free courses on Python, SQL, data analysis and ML."],
+                ["Andrej Karpathy", "https://www.youtube.com/@AndrejKarpathy", "Neural Networks: Zero to Hero. Later stage, deep learning."]
+            ]],
+            ["Blogs, courses and practice", [
+                ["Kaggle Learn", "https://www.kaggle.com/learn", "Short free tracks: Python, pandas, SQL, visualization, ML."],
+                ["KDnuggets", "https://www.kdnuggets.com", "News, tutorials and free course lists for data science."],
+                ["DataTalks.Club blog", "https://datatalks.club/blog/", "Free course comparisons and career advice."],
+                ["Analytics Vidhya blog", "https://www.analyticsvidhya.com/blog/", "Tutorials and learning paths, popular in India."],
+                ["freeCodeCamp news", "https://www.freecodecamp.org/news/", "Practical articles on Python, SQL and analytics."]
+            ]]
+        ];
+
+        function renderLearn() {
+            let saved = {};
+            try { saved = JSON.parse(localStorage.getItem("dl-done") || "{}"); } catch (e) { }
+            const total = LEARN.reduce((n, s) => n + s[1].length, 0);
+            $("learn-body").innerHTML = LEARN.map(([title, items]) => "<h3>" + esc(title) + "</h3><div class='grid'>" +
+                items.map(([n, u, d]) => "<label class='res' data-row><input type='checkbox' data-k='" + esc(u) + "'" + (saved[u] ? " checked" : "") + "><div><a href='" + esc(u) + "' target='_blank' rel='noopener'>" + esc(n) + "</a><p>" + esc(d) + "</p></div></label>").join("") + "</div>").join("");
+            const upd = () => { $("learn-progress").textContent = Object.values(saved).filter(Boolean).length + " of " + total + " explored"; };
+            document.querySelectorAll("#learn-body input").forEach(cb => cb.addEventListener("change", () => {
+                saved[cb.dataset.k] = cb.checked;
+                try { localStorage.setItem("dl-done", JSON.stringify(saved)); } catch (e) { }
+                upd();
+            }));
+            upd();
+        }
+
+        function filterView(v) {
+            if (cur === "home") return render(v);
+            const f = v.trim().toLowerCase();
+            document.querySelectorAll("#v-" + cur + " [data-row]").forEach(el => { el.hidden = !!f && !el.textContent.toLowerCase().includes(f); });
+        }
+
+        function show(v) {
+            cur = v;
+            document.querySelectorAll(".view").forEach(sec => { sec.hidden = sec.id !== "v-" + v; });
+            navLinks.forEach((a, i) => a.classList.toggle("on", order[i] === v));
+            $("q").value = "";
+            $("q").placeholder = { home: "Search readings", learn: "Search resources", jobs: "Search jobs", prices: "Search" }[v];
+            if (!loaded[v]) {
+                loaded[v] = true;
+                ({ jobs: loadJobs, prices: loadPrices, learn: renderLearn }[v] || (() => { }))();
+            }
+        }
+        const fromHash = () => { const h = location.hash.slice(1); return order.includes(h) ? h : "home"; };
+        navLinks.forEach((a, i) => a.addEventListener("click", e => { e.preventDefault(); location.hash = order[i]; }));
+        addEventListener("hashchange", () => show(fromHash()));
+        $("refresh").onclick = $("refresh2").onclick = () => {
+            if (cur === "jobs") loadJobs(); else if (cur === "prices") loadPrices(); else load();
+        };
+        document.querySelector(".new").onclick = () => window.open("/docs", "_blank");
         load();
+        show(fromHash());
     </script>
 </body>
 
 </html>
-
-<!-- <!DOCTYPE html>
-<html>
-
-<head>
-    <title>Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<body>
-    <h1>My Data Dashboard</h1>
-    <canvas id="chart" width="600" height="300"></canvas>
-    <script>
-        fetch("/api/data").then(r => r.json()).then(d => {
-            new Chart(document.getElementById("chart"), {
-                type: "bar",
-                data: { labels: d.labels, datasets: [{ label: "Values", data: d.values }] }
-            });
-        });
-    </script>
-</body>
-
-</html> -->
