@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <h1>My Data Dashboard</h1>
+    <canvas id="chart" width="600" height="300"></canvas>
+    <script>
+        fetch("/api/data").then(r => r.json()).then(d => {
+            new Chart(document.getElementById("chart"), {
+                type: "bar",
+                data: { labels: d.labels, datasets: [{ label: "Values", data: d.values }] }
+            });
+        });
+    </script>
+</body>
+
+</html>
