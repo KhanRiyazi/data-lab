@@ -14,7 +14,7 @@ certifi==2026.10.23
 cffi==2.1.1
 charset-normalizer==3.5.2
 click==8.5.1
-colorama==0.4.6
+colorama==0.4.6; sys_platform == "win32"
 comm==0.2.3
 contourpy==1.4.0
 cycler==0.12.1
@@ -89,7 +89,7 @@ PySocks==1.7.1
 python-dateutil==4.0.0
 python-dotenv==1.2.4
 python-json-logger==4.2.0
-pywinpty==3.1.2
+pywinpty==3.1.2; sys_platform == "win32"
 PyYAML==6.0.3
 pyzmq==27.3.0
 referencing==0.37.0
