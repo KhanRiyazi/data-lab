@@ -4,13 +4,19 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
 
@@ -43,10 +49,17 @@ jobs:
 
   deploy:
     needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Trigger Render deploy
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-        run: curl -fsS -X POST "$HOOK" > /dev/null
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::RENDER_DEPLOY_HOOK secret is missing. Add it under Settings > Secrets and variables > Actions > Secrets."
+            exit 1
+          fi
+          curl -fsS --retry 3 --max-time 30 -X POST "$HOOK" > /dev/null
+          echo "Render deploy triggered"
