@@ -8,7 +8,7 @@ router = APIRouter(prefix="/api", tags=["jobs"])
 
 # Remotive public API: please keep requests rare, show the source and link back.
 SOURCE_URL = "https://remotive.com/api/remote-jobs"
-CACHE_SECONDS = 6 * 3600
+CACHE_SECONDS = 12 * 3600
 _cache = {"t": 0.0, "jobs": []}
 
 

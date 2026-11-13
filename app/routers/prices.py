@@ -37,7 +37,7 @@ def prices():
         inr = r["INR"]
         days = sorted(series["rates"])
         values = [series["rates"][d]["INR"] for d in days]
-    except (requests.RequestException, KeyError, TypeError) as exc:
+    except (requests.RequestException, ValueError, KeyError, TypeError) as exc:
         if _cache["data"]:
             return _cache["data"]
         raise HTTPException(status_code=502, detail=f"Prices source unavailable: {exc}")

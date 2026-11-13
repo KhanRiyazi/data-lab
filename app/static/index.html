@@ -3,7 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f6f8fc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#131314" media="(prefers-color-scheme: dark)">
     <title>Data Lab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
@@ -12,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
+            color-scheme: light dark;
             --bg: #f6f8fc;
             --surface: #fff;
             --text: #202124;
@@ -52,8 +56,10 @@
             background: var(--bg);
             color: var(--text);
             height: 100vh;
+            height: 100dvh;
             display: flex;
-            flex-direction: column
+            flex-direction: column;
+            -webkit-tap-highlight-color: transparent
         }
 
         header {
@@ -366,24 +372,6 @@
             font-size: 14px
         }
 
-        @media (max-width:860px) {
-
-            .nav,
-            .brand span {
-                display: none
-            }
-
-            .brand {
-                width: auto
-            }
-
-            main {
-                margin: 0;
-                border-radius: 0;
-                padding: 16px
-            }
-        }
-
         [hidden] {
             display: none !important
         }
@@ -465,12 +453,375 @@
         .sub a {
             color: var(--blue)
         }
+
+        .up {
+            color: var(--green)
+        }
+
+        .down {
+            color: var(--red)
+        }
+
+        .form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center
+        }
+
+        .form input,
+        .form select {
+            height: 36px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text);
+            padding: 0 10px;
+            font: inherit;
+            font-size: 14px
+        }
+
+        .form input[type=checkbox] {
+            height: auto
+        }
+
+        #cr-skills {
+            flex: 1;
+            min-width: 260px
+        }
+
+        .chk {
+            font-size: 14px;
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        td select {
+            height: 30px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--surface);
+            color: var(--text);
+            font: inherit;
+            font-size: 13px
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--blue-soft);
+            color: var(--blue-dark);
+            border-radius: 10px;
+            padding: 1px 8px;
+            font-size: 12px;
+            margin: 0 4px 2px 0
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 2px
+        }
+
+        .card {
+            border-radius: 16px
+        }
+
+        .card.stat {
+            background: var(--bg);
+            border-color: transparent
+        }
+
+        .nav.collapsed {
+            display: none
+        }
+
+        .scrim {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .4);
+            z-index: 40
+        }
+
+        .bottom,
+        .fab {
+            display: none
+        }
+
+        .sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 50;
+            background: var(--surface);
+            border-radius: 28px 28px 0 0;
+            padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, .25);
+            max-width: 560px;
+            margin: 0 auto
+        }
+
+        .sheet .grab {
+            width: 32px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--line);
+            margin: 0 auto 12px
+        }
+
+        .sheet h2 {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 8px 8px
+        }
+
+        .act {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            min-height: 56px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 16px;
+            background: none;
+            color: var(--text);
+            font: inherit;
+            font-size: 15px;
+            text-align: left;
+            text-decoration: none;
+            cursor: pointer
+        }
+
+        .act:hover,
+        .act:active {
+            background: var(--hover)
+        }
+
+        .act svg {
+            color: var(--blue);
+            flex-shrink: 0
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important;
+                animation: none !important
+            }
+        }
+
+        @media (max-width:860px) {
+            header {
+                height: 60px;
+                padding: 0 calc(8px + env(safe-area-inset-right)) 0 calc(8px + env(safe-area-inset-left))
+            }
+
+            .brand {
+                width: auto
+            }
+
+            .brand span {
+                display: none
+            }
+
+            .search {
+                height: 44px;
+                max-width: none
+            }
+
+            .avatar {
+                display: none
+            }
+
+            .nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: min(300px, 86vw);
+                z-index: 60;
+                background: var(--surface);
+                padding: 16px 12px;
+                overflow: auto;
+                transform: translateX(-105%);
+                transition: transform .22s ease;
+                border-radius: 0 24px 24px 0;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, .3)
+            }
+
+            .nav.open {
+                transform: none
+            }
+
+            .nav a {
+                min-height: 48px
+            }
+
+            main {
+                margin: 0;
+                border-radius: 20px 20px 0 0;
+                padding: 16px 16px calc(96px + env(safe-area-inset-bottom))
+            }
+
+            .bottom {
+                display: flex;
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 20;
+                background: var(--bg);
+                padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+                border-top: 1px solid var(--line);
+                justify-content: space-around
+            }
+
+            .bottom a {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                min-height: 56px;
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 12px
+            }
+
+            .bottom .pill {
+                width: 64px;
+                height: 32px;
+                border-radius: 16px;
+                display: grid;
+                place-items: center
+            }
+
+            .bottom a.on {
+                color: var(--text);
+                font-weight: 500
+            }
+
+            .bottom a.on .pill {
+                background: var(--blue-soft);
+                color: var(--blue-dark)
+            }
+
+            .fab {
+                display: flex;
+                position: fixed;
+                right: calc(16px + env(safe-area-inset-right));
+                bottom: calc(88px + env(safe-area-inset-bottom));
+                z-index: 25;
+                height: 56px;
+                padding: 0 20px 0 16px;
+                align-items: center;
+                gap: 12px;
+                border: 0;
+                border-radius: 16px;
+                background: var(--blue-soft);
+                color: var(--blue-dark);
+                font: 500 14px inherit;
+                font-family: inherit;
+                box-shadow: 0 2px 8px rgba(60, 64, 67, .35);
+                cursor: pointer
+            }
+
+            .chartbox {
+                height: 240px
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px
+            }
+
+            .stat .v {
+                font-size: 24px
+            }
+
+            .btn {
+                min-height: 44px
+            }
+
+            .form input,
+            .form select {
+                flex: 1 1 140px;
+                height: 44px
+            }
+
+            #cr-skills {
+                flex-basis: 100%;
+                min-width: 0
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .scroll {
+                max-height: none !important;
+                overflow: visible
+            }
+
+            table,
+            tbody {
+                display: block
+            }
+
+            thead {
+                display: none
+            }
+
+            tr {
+                display: block;
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                margin: 10px 0;
+                padding: 6px 4px
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                border: 0;
+                padding: 6px 10px;
+                text-align: right
+            }
+
+            td::before {
+                content: attr(data-label);
+                color: var(--muted);
+                font-size: 12px;
+                text-align: left;
+                flex-shrink: 0
+            }
+
+            td[data-label=""]::before {
+                display: none
+            }
+
+            td[colspan] {
+                display: block;
+                text-align: center
+            }
+
+            td[colspan]::before {
+                display: none
+            }
+
+            tr:hover td {
+                background: none
+            }
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <button class="icon-btn" aria-label="Main menu"><svg viewBox="0 0 24 24">
+        <button class="icon-btn" id="menu" aria-label="Main menu" aria-expanded="false"><svg viewBox="0 0 24 24">
                 <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
             </svg></button>
         <div class="brand">
@@ -493,22 +844,31 @@
 
     <div class="layout">
         <nav class="nav">
-            <button class="new"><svg viewBox="0 0 24 24">
+            <button class="new" id="lab-link"><svg viewBox="0 0 24 24">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                </svg>New source</button>
-            <a href="#" class="on"><svg viewBox="0 0 24 24">
+                </svg>Analyst Lab</button>
+            <a href="#home" class="on"><svg viewBox="0 0 24 24">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>Home</a>
-            <a href="#"><svg viewBox="0 0 24 24">
-                    <path d="M3 13h2v8H3zm4-5h2v13H7zm4-5h2v18h-2zm4 8h2v10h-2zm4-3h2v13h-2z" />
-                </svg>Learn</a>
-            <a href="#"><svg viewBox="0 0 24 24">
+            <a href="#career"><svg viewBox="0 0 24 24">
                     <path
                         d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4z" />
-                </svg>Jobs</a>
-            <a href="#"><svg viewBox="0 0 24 24">
+                </svg>Career radar</a>
+            <a href="#tracker"><svg viewBox="0 0 24 24">
+                    <path d="M3 5h2v2H3zm4 0h14v2H7zM3 11h2v2H3zm4 0h14v2H7zM3 17h2v2H3zm4 0h14v2H7z" />
+                </svg>Tracker</a>
+            <a href="#markets"><svg viewBox="0 0 24 24">
                     <path d="M3.5 18.5l6-6 4 4L22 6.9 20.6 5.5l-7.1 7.1-4-4L2 16z" />
-                </svg>Prices</a>
+                </svg>Markets</a>
+            <a href="#pulse"><svg viewBox="0 0 24 24">
+                    <path d="M7 2v11h3v9l7-12h-4l4-8z" />
+                </svg>Google pulse</a>
+            <a href="#jobs"><svg viewBox="0 0 24 24">
+                    <path d="M3 13h2v8H3zm4-5h2v13H7zm4-5h2v18h-2zm4 8h2v10h-2zm4-3h2v13h-2z" />
+                </svg>Data jobs</a>
+            <a href="#learn"><svg viewBox="0 0 24 24">
+                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+                </svg>Learn</a>
             <hr>
             <a href="/docs"><svg viewBox="0 0 24 24">
                     <path
@@ -522,7 +882,7 @@
 
         <main>
             <section id="v-home" class="view">
-                <h1>Good day, Riyaz</h1>
+                <h1 id="hello">Good day, Riyaz</h1>
                 <div class="sub">
                     <span id="status" class="chip"><i class="dot"></i><span>Checking API</span></span>
                     <span id="updated">Loading data</span>
@@ -576,7 +936,7 @@
                 <div class="sub">
                     <span id="jobs-status" class="chip"><i class="dot"></i><span>Loading</span></span>
                     <span>Remote data roles from <a href="https://remotive.com" target="_blank"
-                            rel="noopener">Remotive</a>, refreshed every 6 hours</span>
+                            rel="noopener">Remotive</a>, refreshed every 12 hours</span>
                 </div>
                 <section class="stats">
                     <div class="card stat">
@@ -622,18 +982,172 @@
                 </section>
             </section>
 
-            <section id="v-prices" class="view" hidden>
-                <h1>Market prices</h1>
-                <div class="sub">
-                    <span id="fx-status" class="chip"><i class="dot"></i><span>Loading</span></span>
-                    <span id="fx-date">Exchange rates in Indian rupees</span>
-                </div>
-                <section class="stats" id="fx-cards"></section>
+            <section id="v-career" class="view" hidden>
+                <h1>Career radar</h1>
+                <div class="sub"><span id="cr-status" class="chip"><i class="dot"></i><span>Loading</span></span><span
+                        id="cr-info">Remote AI training, STEM teaching and data roles</span></div>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>My profile</h2>
+                    <div class="form"><input id="cr-skills" aria-label="My skills"
+                            placeholder="python, mathematics, physics, statistics"><label class="chk"><input
+                                type="checkbox" id="cr-india" checked> Open to India</label><button class="btn"
+                            id="cr-save">Update match</button></div>
+                    <p class="note">Edit this list to match your real skills. Match % is the share of skills a role
+                        mentions that you already have.</p>
+                </section>
+                <section class="stats">
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--blue)"></b>Roles found</div>
+                        <div class="v" id="cr-n">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--green)"></b>Best match</div>
+                        <div class="v" id="cr-best">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--red)"></b>Top skill to add</div>
+                        <div class="v" id="cr-gap" style="font-size:22px">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--yellow)"></b>AI training roles</div>
+                        <div class="v" id="cr-ai">-</div>
+                    </div>
+                </section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Skills employers ask for (blue = you have it, red = gap)</h2>
+                    <div class="chartbox" style="height:300px"><canvas id="cr-chart"></canvas></div>
+                </section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Roles ranked by match</h2>
+                    <div class="scroll" style="max-height:480px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Match</th>
+                                    <th>Role</th>
+                                    <th>Company</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th>Source</th>
+                                    <th>Posted</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="cr-rows"></tbody>
+                        </table>
+                    </div>
+                    <p class="note">Jobs from <a href="https://remotive.com" target="_blank" rel="noopener">Remotive</a>
+                        and <a href="https://jobicy.com" target="_blank" rel="noopener">Jobicy</a>. Apply on the
+                        original site.</p>
+                </section>
                 <section class="card">
-                    <h2>US dollar in rupees, last 30 days</h2>
-                    <div class="chartbox"><canvas id="fx-chart"></canvas></div>
-                    <p class="note">Reference rates from the European Central Bank, served by Frankfurter. Updated on
-                        business days.</p>
+                    <h2>Platforms that hire AI trainers and STEM experts</h2>
+                    <div class="grid" id="cr-plat"></div>
+                    <p class="note">Verify each site yourself. Real platforms never charge a fee to start, and never
+                        promise guaranteed income. Work is project-based and queues can run dry.</p>
+                </section>
+            </section>
+
+            <section id="v-tracker" class="view" hidden>
+                <h1>Application tracker</h1>
+                <div class="sub"><span id="tr-status" class="chip"><i
+                            class="dot"></i><span>Loading</span></span><span>Your own results are the most valuable
+                        career data. Stored on this laptop only.</span></div>
+                <section class="stats">
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--blue)"></b>Tracked</div>
+                        <div class="v" id="tr-total">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--yellow)"></b>Applied</div>
+                        <div class="v" id="tr-applied">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--green)"></b>Response rate</div>
+                        <div class="v" id="tr-rate">-</div>
+                    </div>
+                    <div class="card stat">
+                        <div class="k"><b style="background:var(--red)"></b>Interviews and offers</div>
+                        <div class="v" id="tr-int">-</div>
+                    </div>
+                </section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Add application</h2>
+                    <div class="form"><input id="tr-company" placeholder="Company"><input id="tr-role"
+                            placeholder="Role"><input id="tr-source" placeholder="Source"><input id="tr-url"
+                            placeholder="Link (optional)"><select id="tr-st" aria-label="Status"></select><button
+                            class="btn" id="tr-add">Add</button></div>
+                </section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Pipeline</h2>
+                    <div class="chartbox" style="height:240px"><canvas id="tr-chart"></canvas></div>
+                </section>
+                <section class="card">
+                    <h2>All applications</h2>
+                    <div class="scroll" style="max-height:420px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Role</th>
+                                    <th>Company</th>
+                                    <th>Source</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tr-rows"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+
+            <section id="v-markets" class="view" hidden>
+                <h1>Markets: India and US</h1>
+                <div class="sub"><span id="mk-status" class="chip"><i class="dot"></i><span>Loading</span></span><span
+                        id="mk-info">Daily closes, last 30 days</span></div>
+                <section class="stats" id="mk-cards"></section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Index performance, rebased to 100</h2>
+                    <div class="chartbox"><canvas id="mk-chart"></canvas></div>
+                </section>
+                <section class="card">
+                    <h2>Your USD income in rupees</h2>
+                    <div class="form"><input id="mk-usd" type="number" min="0" value="1000"
+                            aria-label="Monthly income in USD"><span id="mk-inr"></span></div>
+                    <p class="note" id="mk-fx"></p>
+                    <p class="note">Educational data from Yahoo Finance (unofficial, may be delayed) and the European
+                        Central Bank. Not financial advice.</p>
+                </section>
+            </section>
+
+            <section id="v-pulse" class="view" hidden>
+                <h1>Google pulse</h1>
+                <div class="sub"><span id="pl-status" class="chip"><i class="dot"></i><span>Loading</span></span><span
+                        id="pl-feeds">Official Google release feeds</span></div>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Product mentions, last 90 days</h2>
+                    <div class="chartbox" style="height:280px"><canvas id="pl-chart"></canvas></div>
+                </section>
+                <section class="card" style="margin-bottom:16px">
+                    <h2>Latest official updates</h2>
+                    <div class="scroll" style="max-height:440px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Products</th>
+                                    <th>Update</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pl-rows"></tbody>
+                        </table>
+                    </div>
+                </section>
+                <section class="card">
+                    <h2>Open the tools</h2>
+                    <div class="grid" id="pl-links"></div>
                 </section>
             </section>
 
@@ -649,6 +1163,46 @@
                 <div id="learn-body"></div>
             </section>
         </main>
+    </div>
+
+    <div id="scrim" class="scrim" hidden></div>
+    <nav class="bottom" aria-label="Primary"><a href="#home" data-v="home" class="on"><span class="pill"><svg
+                    viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg></span>Home</a><a href="#career" data-v="career"><span class="pill"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-10-2h4v2h-4V4z" />
+                </svg></span>Career</a><a href="#tracker" data-v="tracker"><span class="pill"><svg viewBox="0 0 24 24">
+                    <path d="M3 5h2v2H3zm4 0h14v2H7zM3 11h2v2H3zm4 0h14v2H7zM3 17h2v2H3zm4 0h14v2H7z" />
+                </svg></span>Tracker</a><a href="#markets" data-v="markets"><span class="pill"><svg viewBox="0 0 24 24">
+                    <path d="M3.5 18.5l6-6 4 4L22 6.9 20.6 5.5l-7.1 7.1-4-4L2 16z" />
+                </svg></span>Markets</a><a href="#pulse" data-v="pulse"><span class="pill"><svg viewBox="0 0 24 24">
+                    <path d="M7 2v11h3v9l7-12h-4l4-8z" />
+                </svg></span>Google</a></nav>
+    <button class="fab" id="fab" aria-label="Quick actions"><svg viewBox="0 0 24 24">
+            <path
+                d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
+        </svg>Quick actions</button>
+    <div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Quick actions" hidden>
+        <div class="grab"></div>
+        <h2>Quick actions</h2>
+        <button class="act" id="act-add"><svg viewBox="0 0 24 24">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+            </svg>Add an application</button>
+        <button class="act" id="act-refresh"><svg viewBox="0 0 24 24">
+                <path
+                    d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+            </svg>Refresh this page</button>
+        <a class="act" href="https://khanriyazi.github.io/Analyst-lab/" target="_blank" rel="noopener"><svg
+                viewBox="0 0 24 24">
+                <path
+                    d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+            </svg>Open Analyst Lab</a>
+        <button class="act" id="act-install"><svg viewBox="0 0 24 24">
+                <path d="M5 20h14v-2H5v2zm14-9h-4V3H9v8H5l7 7 7-7z" />
+            </svg>Add to Home screen</button>
+        <p class="note" id="install-note" hidden style="margin:4px 16px 0">In Chrome, tap the menu (three dots) and
+            choose Add to Home screen. It then opens like an app.</p>
     </div>
 
     <script>
@@ -708,27 +1262,27 @@
         async function load() {
             try {
                 const h = await fetch("/api/health");
-                const ok = h.ok;
-                $("status").className = "chip " + (ok ? "ok" : "bad");
-                $("status").lastChild.textContent = ok ? "API online" : "API error";
-                const r = await fetch("/api/data");
-                all = await r.json();
-                stats(); draw(); render($("q").value);
-                $("updated").textContent = all.values.length
-                    ? "Updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                    : (all.message || "No data");
+                $("status").className = "chip " + (h.ok ? "ok" : "bad");
+                $("status").lastChild.textContent = h.ok ? "API online" : "API error";
+                all = await (await fetch("/api/data")).json();
             } catch (e) {
                 $("status").className = "chip bad";
                 $("status").lastChild.textContent = "API offline";
                 $("updated").textContent = "Could not reach the server";
+                return;
             }
+            stats(); render($("q").value);
+            $("updated").textContent = all.values.length
+                ? "Updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                : (all.message || "No data");
+            try { draw(); } catch (e) { $("updated").textContent += ". Charts unavailable (check your internet)."; }
         }
 
         $("q").addEventListener("input", e => filterView(e.target.value));
         $("refresh").onclick = $("refresh2").onclick = load;
 
-        const order = ["home", "learn", "jobs", "prices"];
-        const navLinks = [...document.querySelectorAll(".nav a")].slice(0, 4);
+        const order = ["home", "career", "tracker", "markets", "pulse", "jobs", "learn"];
+        const navLinks = [...document.querySelectorAll(".nav a")].slice(0, order.length);
         const loaded = { home: true };
         let cur = "home", jobsChart, fxChart;
         const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -772,30 +1326,175 @@
             }
         }
 
-        async function loadPrices() {
-            setStatus("fx-status", "", "Loading");
+        let mkChart, plChart, crChart, trChart, careerData = null, careerJobs = [];
+        const COLORS = ["#1a73e8", "#4285f4", "#ea4335", "#34a853", "#fbbc04"];
+        const ST = ["Saved", "Applied", "Screening", "Interview", "Offer", "Rejected", "No response"];
+        const pct = n => (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
+        const cls = n => n >= 0 ? "up" : "down";
+        const link = (u, t) => "<a href='" + esc(safeUrl(u)) + "' target='_blank' rel='noopener'>" + esc(t) + "</a>";
+        const barOpts = (t, horizontal) => ({
+            indexAxis: horizontal ? "y" : "x", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+            scales: { x: { grid: { display: !!horizontal, color: t.grid }, ticks: { color: t.txt } }, y: { grid: { display: !horizontal, color: t.grid }, ticks: { color: t.txt } } }
+        });
+        async function send(method, url, body) {
+            const r = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+            const d = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(typeof d.detail === "string" ? d.detail : "Please check the fields");
+            return d;
+        }
+
+        /* ---------- Markets ---------- */
+        let usdInr = null;
+        function updInr() {
+            const v = parseFloat($("mk-usd").value);
+            $("mk-inr").textContent = usdInr && v >= 0 ? "= \u20b9" + (v * usdInr).toLocaleString("en-IN", { maximumFractionDigits: 0 }) + " per month at \u20b9" + usdInr.toFixed(2) + " per USD" : "";
+        }
+        async function loadMarkets() {
+            setStatus("mk-status", "", "Loading");
             try {
-                const d = await getJSON("/api/prices");
-                const colors = ["var(--blue)", "var(--red)", "var(--green)", "var(--yellow)"];
-                $("fx-cards").innerHTML = Object.entries(d.inr_per).map(([k, v], i) => "<div class='card stat'><div class='k'><b style='background:" + colors[i % 4] + "'></b>" + esc(k) + "</div><div class='v'>\u20b9" + v.toFixed(2) + "</div></div>").join("");
-                $("fx-date").textContent = "Rates for " + d.date + ". USD " + (d.change_pct >= 0 ? "+" : "") + d.change_pct.toFixed(2) + "% in 30 days";
+                const d = await getJSON("/api/markets");
+                const ok = d.indices.filter(x => !x.error), bad = d.indices.filter(x => x.error);
+                $("mk-cards").innerHTML = ok.map(x => "<div class='card stat'><div class='k'><b style='background:" + (x.region === "India" ? "var(--blue)" : "var(--red)") + "'></b>" + esc(x.name) + " (" + esc(x.region) + ")</div><div class='v'>" + x.price.toLocaleString("en-IN", { maximumFractionDigits: 2 }) + "</div><div class='note " + cls(x.day_pct) + "'>" + pct(x.day_pct) + " day, " + pct(x.month_pct) + " month</div></div>").join("");
+                $("mk-info").textContent = bad.length ? "Unavailable right now: " + bad.map(x => x.name).join(", ") : "Daily closes, last 30 days";
                 const t = theme();
-                if (fxChart) fxChart.destroy();
-                fxChart = new Chart($("fx-chart"), {
+                if (mkChart) mkChart.destroy();
+                mkChart = new Chart($("mk-chart"), {
                     type: "line",
-                    data: { labels: d.history.labels, datasets: [{ data: d.history.values, borderColor: t.blue, backgroundColor: t.blue + "22", fill: true, tension: .3, pointRadius: 2, borderWidth: 2 }] },
+                    data: { labels: d.dates, datasets: ok.map((x, i) => ({ label: x.name, data: x.rebased, borderColor: COLORS[i % 5], backgroundColor: COLORS[i % 5], tension: .25, pointRadius: 0, borderWidth: 2, spanGaps: true })) },
                     options: {
-                        responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                        responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: t.txt } } },
                         scales: { x: { grid: { display: false }, ticks: { color: t.txt, maxTicksLimit: 8 } }, y: { grid: { color: t.grid }, ticks: { color: t.txt } } }
                     }
                 });
-                setStatus("fx-status", "ok", "Live");
-            } catch (e) {
-                loaded.prices = false;
-                setStatus("fx-status", "bad", "Failed");
-                $("fx-date").textContent = e.message;
-            }
+                if (d.fx) {
+                    usdInr = d.fx.inr_per.USD;
+                    $("mk-fx").textContent = "USD moved " + pct(d.fx.change_pct) + " against the rupee in 30 days. If you are paid in dollars, that change flows straight into your rupee income.";
+                }
+                updInr();
+                setStatus("mk-status", "ok", "Live");
+            } catch (e) { loaded.markets = false; setStatus("mk-status", "bad", e.message); }
         }
+
+        /* ---------- Google pulse ---------- */
+        const GLINKS = [
+            ["Google Antigravity", "https://antigravity.google", "Agentic coding platform"],
+            ["Google AI Studio", "https://aistudio.google.com", "Prototype with Gemini models"],
+            ["Gemini release notes", "https://gemini.google/release-notes/", "What changed in the Gemini app"],
+            ["Gemini Enterprise release notes", "https://docs.cloud.google.com/gemini/enterprise/docs/release-notes", "Business and developer tools"],
+            ["Apps Script", "https://developers.google.com/apps-script", "Automate Sheets, Docs and Gmail"],
+            ["BigQuery to Sheets (Connected Sheets)", "https://cloud.google.com/bigquery/docs/connected-sheets", "Analyse BigQuery data in Sheets"],
+            ["Looker Studio", "https://lookerstudio.google.com", "Free dashboards"],
+            ["Workspace Updates blog", "https://workspaceupdates.googleblog.com", "Official Workspace launches"]
+        ];
+        async function loadPulse() {
+            setStatus("pl-status", "", "Loading");
+            $("pl-links").innerHTML = GLINKS.map(([n, u, d]) => "<div class='res'><div>" + link(u, n) + "<p>" + esc(d) + "</p></div></div>").join("");
+            try {
+                const d = await getJSON("/api/google-pulse");
+                $("pl-feeds").textContent = d.feeds.map(f => f.name + (f.ok ? "" : " (unavailable)")).join(", ") + ". Since " + d.since;
+                $("pl-rows").innerHTML = d.items.map(i => "<tr data-row><td>" + esc(i.date) + "</td><td>" + i.tags.map(t => "<span class='tag'>" + esc(t) + "</span>").join("") + "</td><td>" + link(i.url, i.title) + "<br><span style='color:var(--muted);font-size:12px'>" + esc(i.summary) + "</span></td><td>" + esc(i.source) + "</td></tr>").join("") || "<tr><td colspan='4' class='empty'>No updates found</td></tr>";
+                const t = theme();
+                if (plChart) plChart.destroy();
+                plChart = new Chart($("pl-chart"), { type: "bar", data: { labels: d.counts.map(x => x.product), datasets: [{ data: d.counts.map(x => x.count), backgroundColor: t.blue, borderRadius: 4 }] }, options: barOpts(t, false) });
+                setStatus("pl-status", d.feeds.some(f => f.ok) ? "ok" : "bad", d.feeds.some(f => f.ok) ? "Live" : "Feeds unavailable");
+            } catch (e) { loaded.pulse = false; setStatus("pl-status", "bad", "Failed"); $("pl-feeds").textContent = e.message; }
+        }
+
+        /* ---------- Career ---------- */
+        const DEFAULT_SKILLS = "python, mathematics, physics, statistics, prompt engineering, llm, tutoring, data analysis";
+        const PLATFORMS = [
+            ["Outlier", "https://outlier.ai", "Scale AI contractor platform: prompts, rubrics and model rating in STEM, coding and languages."],
+            ["DataAnnotation", "https://www.dataannotation.tech", "Evaluation and coding tasks. Batches can run dry mid-week."],
+            ["Mercor", "https://mercor.com", "Expert network. You apply to specific roles, so expect rejections."],
+            ["Alignerr", "https://alignerr.com", "Expert network powered by Labelbox."],
+            ["Mindrift", "https://mindrift.ai", "Project-based AI training work, run by Toloka."],
+            ["Handshake AI", "https://joinhandshake.com", "Expert evaluation projects for advanced degree holders."],
+            ["Appen", "https://appen.com", "Higher volume, steadier tasks, usually lower rates."],
+            ["Preply", "https://preply.com", "Online tutoring marketplace for STEM and languages."],
+            ["Superprof", "https://www.superprof.co.in", "Tutor listings in India."],
+            ["Udemy", "https://www.udemy.com", "Publish your own STEM or AI course."]
+        ];
+        const mySkills = () => $("cr-skills").value.toLowerCase().split(",").map(x => x.trim()).filter(x => x.length >= 3);
+        const hasSkill = k => mySkills().some(m => k.includes(m) || m.includes(k));
+        async function loadCareer() {
+            setStatus("cr-status", "", "Loading");
+            $("cr-plat").innerHTML = PLATFORMS.map(([n, u, d]) => "<div class='res'><div>" + link(u, n) + "<p>" + esc(d) + "</p></div></div>").join("");
+            try {
+                $("cr-skills").value = localStorage.getItem("dl-skills") || DEFAULT_SKILLS;
+                const i = localStorage.getItem("dl-india"); if (i !== null) $("cr-india").checked = i === "1";
+            } catch (e) { $("cr-skills").value = DEFAULT_SKILLS; }
+            try {
+                careerData = await getJSON("/api/career");
+                renderCareer();
+                setStatus("cr-status", careerData.errors.length ? "" : "ok", careerData.errors.length ? "Partial data" : "Live");
+            } catch (e) { loaded.career = false; setStatus("cr-status", "bad", "Failed"); $("cr-info").textContent = e.message; }
+        }
+        function renderCareer() {
+            if (!careerData) return;
+            const india = $("cr-india").checked;
+            careerJobs = careerData.jobs.filter(j => !india || j.india_ok).map(j => {
+                const have = j.needs.filter(hasSkill);
+                return Object.assign({}, j, { gap: j.needs.filter(n => !hasSkill(n)), match: j.needs.length ? Math.round(have.length / j.needs.length * 100) : 0 });
+            }).sort((a, b) => b.match - a.match || (b.posted || "").localeCompare(a.posted || ""));
+            const missing = careerData.demand.find(d => !hasSkill(d.skill));
+            $("cr-n").textContent = careerJobs.length;
+            $("cr-best").textContent = careerJobs.length ? careerJobs[0].match + "%" : "-";
+            $("cr-gap").textContent = missing ? missing.skill : "none";
+            $("cr-ai").textContent = careerJobs.filter(j => j.category === "AI training").length;
+            $("cr-rows").innerHTML = careerJobs.map((j, i) => "<tr data-row><td title='" + esc(j.gap.length ? "Missing: " + j.gap.join(", ") : "No gaps") + "'><b>" + j.match + "%</b></td><td>" + link(j.url, j.title) + "<br><span class='tag'>" + esc(j.category) + "</span></td><td>" + esc(j.company) + "</td><td>" + esc(j.type) + "</td><td>" + esc(j.location) + "</td><td>" + esc(j.source) + "</td><td>" + esc(j.posted) + "</td><td><button class='btn' data-track='" + i + "'>Track</button></td></tr>").join("") || "<tr><td colspan='8' class='empty'>No roles match these filters</td></tr>";
+            const t = theme();
+            if (crChart) crChart.destroy();
+            crChart = new Chart($("cr-chart"), { type: "bar", data: { labels: careerData.demand.map(d => d.skill), datasets: [{ data: careerData.demand.map(d => d.count), backgroundColor: careerData.demand.map(d => hasSkill(d.skill) ? t.blue : "#ea4335"), borderRadius: 4 }] }, options: barOpts(t, true) });
+        }
+        $("cr-save").onclick = () => {
+            try { localStorage.setItem("dl-skills", $("cr-skills").value); localStorage.setItem("dl-india", $("cr-india").checked ? "1" : "0"); } catch (e) { }
+            renderCareer();
+        };
+        $("cr-india").addEventListener("change", renderCareer);
+        $("cr-rows").addEventListener("click", async e => {
+            const i = e.target.dataset.track; if (i === undefined) return;
+            const j = careerJobs[+i];
+            try {
+                await send("POST", "/api/applications", { company: j.company, role: j.title, source: j.source, url: j.url, status: "Saved" });
+                e.target.textContent = "Saved"; e.target.disabled = true; loaded.tracker = false;
+            } catch (err) { setStatus("cr-status", "bad", err.message); }
+        });
+
+        /* ---------- Tracker ---------- */
+        async function loadTracker() {
+            setStatus("tr-status", "", "Loading");
+            if (!$("tr-st").options.length) $("tr-st").innerHTML = ST.map(s => "<option" + (s === "Applied" ? " selected" : "") + ">" + s + "</option>").join("");
+            try {
+                const d = await getJSON("/api/applications");
+                $("tr-total").textContent = d.stats.total;
+                $("tr-applied").textContent = d.stats.applied;
+                $("tr-rate").textContent = d.stats.applied ? d.stats.response_rate + "%" : "-";
+                $("tr-int").textContent = d.stats.interviews;
+                $("tr-rows").innerHTML = d.items.map(a => "<tr data-row><td>" + esc(a.applied_on) + "</td><td>" + (a.url ? link(a.url, a.role) : esc(a.role)) + "</td><td>" + esc(a.company) + "</td><td>" + esc(a.source) + "</td><td><select data-id='" + a.id + "'>" + ST.map(s => "<option" + (s === a.status ? " selected" : "") + ">" + s + "</option>").join("") + "</select></td><td><button class='btn' data-del='" + a.id + "'>Delete</button></td></tr>").join("") || "<tr><td colspan='6' class='empty'>No applications yet. Add your first one above or use Track on the Career radar.</td></tr>";
+                const t = theme();
+                if (trChart) trChart.destroy();
+                trChart = new Chart($("tr-chart"), { type: "bar", data: { labels: ST, datasets: [{ data: ST.map(s => d.stats.by_status[s] || 0), backgroundColor: t.blue, borderRadius: 4 }] }, options: barOpts(t, false) });
+                setStatus("tr-status", "ok", "Live");
+            } catch (e) { loaded.tracker = false; setStatus("tr-status", "bad", e.message); }
+        }
+        $("tr-add").onclick = async () => {
+            const company = $("tr-company").value.trim(), role = $("tr-role").value.trim();
+            if (!company || !role) { setStatus("tr-status", "bad", "Company and role are required"); return; }
+            try {
+                await send("POST", "/api/applications", { company, role, source: $("tr-source").value.trim(), url: $("tr-url").value.trim(), status: $("tr-st").value });
+                ["tr-company", "tr-role", "tr-source", "tr-url"].forEach(id => { $(id).value = ""; });
+                loadTracker();
+            } catch (e) { setStatus("tr-status", "bad", e.message); }
+        };
+        $("tr-rows").addEventListener("change", async e => {
+            const id = e.target.dataset.id; if (!id) return;
+            try { await send("PATCH", "/api/applications/" + id, { status: e.target.value }); loadTracker(); } catch (err) { setStatus("tr-status", "bad", err.message); }
+        });
+        $("tr-rows").addEventListener("click", async e => {
+            const id = e.target.dataset.del; if (!id || !confirm("Delete this application?")) return;
+            try { await send("DELETE", "/api/applications/" + id); loadTracker(); } catch (err) { setStatus("tr-status", "bad", err.message); }
+        });
+        $("mk-usd").addEventListener("input", updInr);
 
         const LEARN = [
             ["GitHub repositories", [
@@ -849,20 +1548,66 @@
             cur = v;
             document.querySelectorAll(".view").forEach(sec => { sec.hidden = sec.id !== "v-" + v; });
             navLinks.forEach((a, i) => a.classList.toggle("on", order[i] === v));
+            document.querySelectorAll(".bottom a").forEach(a => a.classList.toggle("on", a.dataset.v === v));
+            document.querySelector("main").scrollTop = 0;
             $("q").value = "";
-            $("q").placeholder = { home: "Search readings", learn: "Search resources", jobs: "Search jobs", prices: "Search" }[v];
-            if (!loaded[v]) {
+            $("q").placeholder = { home: "Search readings", learn: "Search resources", jobs: "Search jobs", career: "Search roles", tracker: "Search applications", pulse: "Search updates", markets: "Search" }[v];
+            if (!loaded[v] || v === "tracker") {
                 loaded[v] = true;
-                ({ jobs: loadJobs, prices: loadPrices, learn: renderLearn }[v] || (() => { }))();
+                ({ jobs: loadJobs, markets: loadMarkets, pulse: loadPulse, career: loadCareer, tracker: loadTracker, learn: renderLearn }[v] || (() => { }))();
             }
         }
         const fromHash = () => { const h = location.hash.slice(1); return order.includes(h) ? h : "home"; };
-        navLinks.forEach((a, i) => a.addEventListener("click", e => { e.preventDefault(); location.hash = order[i]; }));
+        navLinks.forEach((a, i) => a.addEventListener("click", e => { e.preventDefault(); location.hash = order[i]; setDrawer(false); }));
         addEventListener("hashchange", () => show(fromHash()));
         $("refresh").onclick = $("refresh2").onclick = () => {
-            if (cur === "jobs") loadJobs(); else if (cur === "prices") loadPrices(); else load();
+            ({ jobs: loadJobs, markets: loadMarkets, pulse: loadPulse, career: loadCareer, tracker: loadTracker }[cur] || load)();
         };
-        document.querySelector(".new").onclick = () => window.open("/docs", "_blank");
+        /* ---------- Mobile and Pixel UI ---------- */
+        const navEl = document.querySelector(".nav"), scrim = $("scrim"), sheet = $("sheet"), menuBtn = $("menu");
+        const isMobile = () => matchMedia("(max-width: 860px)").matches;
+        function setDrawer(open) {
+            navEl.classList.toggle("open", open);
+            menuBtn.setAttribute("aria-expanded", String(open));
+            scrim.hidden = !open && sheet.hidden;
+        }
+        function setSheet(open) {
+            sheet.hidden = !open;
+            scrim.hidden = !open && !navEl.classList.contains("open");
+            if (open) $("act-add").focus();
+        }
+        const closeAll = () => { setDrawer(false); setSheet(false); };
+        menuBtn.onclick = () => {
+            if (isMobile()) setDrawer(!navEl.classList.contains("open"));
+            else { navEl.classList.toggle("collapsed"); menuBtn.setAttribute("aria-expanded", String(!navEl.classList.contains("collapsed"))); }
+        };
+        scrim.onclick = closeAll;
+        addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+        $("fab").onclick = () => { if (navigator.vibrate) navigator.vibrate(10); setSheet(true); };
+        $("act-add").onclick = () => {
+            closeAll();
+            if (cur !== "tracker") location.hash = "tracker";
+            setTimeout(() => $("tr-company").focus(), 350);
+        };
+        $("act-refresh").onclick = () => { closeAll(); $("refresh").click(); };
+        $("act-install").onclick = () => { $("install-note").hidden = !$("install-note").hidden; };
+        $("lab-link").onclick = () => window.open("https://khanriyazi.github.io/Analyst-lab/", "_blank", "noopener");
+
+        /* Table rows become cards on phones: copy each header label onto its cells. */
+        function labelCells(table) {
+            const heads = [...table.querySelectorAll("thead th")].map(th => th.textContent.trim());
+            table.querySelectorAll("tbody tr").forEach(tr => [...tr.children].forEach((td, i) => {
+                if (heads[i] !== undefined && !td.hasAttribute("colspan")) td.dataset.label = heads[i];
+            }));
+        }
+        document.querySelectorAll("table").forEach(t => {
+            new MutationObserver(() => labelCells(t)).observe(t.querySelector("tbody"), { childList: true });
+            labelCells(t);
+        });
+
+        const hr = new Date().getHours();
+        $("hello").textContent = "Good " + (hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening") + ", Riyaz";
+
         load();
         show(fromHash());
     </script>

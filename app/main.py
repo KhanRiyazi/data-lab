@@ -5,13 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
-from app.db.database import SessionLocal, Reading
-from app.routers import jobs, prices
+from app.db.database import Reading, SessionLocal
+from app.routers import career, jobs, markets, prices, pulse, tracker
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 app = FastAPI(title="Data Lab")
 
+# Public website may read GET data only. The tracker refuses non-local callers anyway.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -24,8 +25,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(jobs.router)
-app.include_router(prices.router)
+for r in (jobs, prices, markets, pulse, career, tracker):
+    app.include_router(r.router)
 
 
 def get_db():
